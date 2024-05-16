@@ -34,6 +34,7 @@ export default function Movies() {
     } else {
       searchParams.delete("language");
     }
+    searchParams.set("page", "1");
 
     const newUrl = `${window.location.pathname}?${searchParams.toString()}`;
     window.history.pushState({}, "", newUrl);
@@ -43,13 +44,14 @@ export default function Movies() {
     const urlSearchParams = new URLSearchParams(window.location.search);
     const gIds = urlSearchParams.get("genres")?.split(",").map(Number) || [];
     const language = urlSearchParams.get("language") || "";
+    const page = urlSearchParams.get("page") || "1";
 
     setSelectedGenres(gIds);
     setSelectedLanguage(language);
+    setPage(Number(page));
   }
 
   useEffect(() => {
-    console.log("adding event listener")
     window.addEventListener('popstate', handleRouteChange);
     return () => {
       window.removeEventListener('popstate', handleRouteChange);
@@ -58,6 +60,11 @@ export default function Movies() {
 
   function handleSetPage(newPage: number) {
     setPage(newPage);
+    const searchParams = new URLSearchParams();
+    searchParams.set("page", newPage.toString());
+
+    const newUrl = `${window.location.pathname}?${searchParams.toString()}`;
+    window.history.pushState({}, "", newUrl);
   }
 
 
@@ -94,7 +101,6 @@ function MovieFilter({onSearch}: {onSearch: (genreIds: number[], language: strin
     const urlSearchParams = new URLSearchParams(window.location.search);
     const gIds = urlSearchParams.get("genres")?.split(",").map(Number) || [];
     const language = urlSearchParams.get("language") || "";
-    console.log("setting genres and language", gIds, language);
 
     setSelectedGenres(gIds);
     setSelectedLanguage(language);
