@@ -4,13 +4,16 @@ import MainWithSidebarLayout from "@/components/layout/MainWithSidebarLayout";
 import { useEffect,useState } from "react";
 import Button from "@/components/common/Button";
 import { Genre, useMovies, useGenres, useLanguages } from "@/api/thbd";
-import MovieList from "@/components/MovieList";
+import MovieList, { MovieListSkeleton } from "@/components/MovieList";
 import Pagination from "@/components/common/Pagination";
 import Dropdown from "@/components/common/Dropdown";
 
 export default function Movies() {
-  const [selectedGenres, setSelectedGenres] = useState<number[]>([]);
-  const [selectedLanguage, setSelectedLanguage] = useState<string>("");
+  const urlSearchParams = new URLSearchParams(window.location.search);
+  const gIds = urlSearchParams.get("genres")?.split(",").map(Number) || [];
+  const language = urlSearchParams.get("language") || "";
+  const [selectedGenres, setSelectedGenres] = useState<number[]>(gIds);
+  const [selectedLanguage, setSelectedLanguage] = useState<string>(language);
   const [page, setPage] = useState(1);
   const {movies, isLoading, error} = useMovies({page: page, genreIds: selectedGenres, language: selectedLanguage});
 
@@ -35,6 +38,23 @@ export default function Movies() {
     const newUrl = `${window.location.pathname}?${searchParams.toString()}`;
     window.history.pushState({}, "", newUrl);
   }
+
+  function handleRouteChange() {
+    const urlSearchParams = new URLSearchParams(window.location.search);
+    const gIds = urlSearchParams.get("genres")?.split(",").map(Number) || [];
+    const language = urlSearchParams.get("language") || "";
+
+    setSelectedGenres(gIds);
+    setSelectedLanguage(language);
+  }
+
+  useEffect(() => {
+    console.log("adding event listener")
+    window.addEventListener('popstate', handleRouteChange);
+    return () => {
+      window.removeEventListener('popstate', handleRouteChange);
+    };
+  }, []);
 
   function handleSetPage(newPage: number) {
     setPage(newPage);
@@ -82,9 +102,10 @@ function MovieFilter({onSearch}: {onSearch: (genreIds: number[], language: strin
 
   useEffect(() => {
     handleRouteChange();
-    window.addEventListener('popstate', ()=>{handleRouteChange(); onSearch(selectedGenres, selectedLanguage)});
+    console.log("adding event listener")
+    window.addEventListener('popstate', handleRouteChange);
     return () => {
-      window.removeEventListener('popstate', ()=>{handleRouteChange(); onSearch(selectedGenres, selectedLanguage)});
+      window.removeEventListener('popstate', handleRouteChange);
     };
   }, []);
 
