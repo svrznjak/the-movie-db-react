@@ -1,0 +1,11 @@
+@font-face {
+  font-family: 'Source Sans Pro';
+  src: url('@/assets/SourceSans3.ttf') format('truetype');
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Source Sans Pro';
+  src: url('@/assets/SourceSans3-Italic.ttf') format('truetype');
+  font-style: italic;
+}

@@ -1,0 +1,19 @@
+.header {
+  height: 64px;
+  z-index: 50;
+  color: var(--color-text-light);
+  background-color: var(--color-primary-dark);
+}
+
+.header .content {
+  display: flex;
+  height: 100%;
+  max-width: var(--content-max-width);
+  margin: 0 auto;
+  padding: 0 var(--content-pad-lr);
+  align-items: center;
+}
+
+.header img {
+  height: 20px;
+}

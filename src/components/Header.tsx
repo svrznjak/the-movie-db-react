@@ -1,3 +1,0 @@
-/**
- * Simple header with logo.
- */

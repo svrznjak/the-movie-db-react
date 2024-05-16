@@ -1,0 +1,21 @@
+.button {
+  height: 44px;
+  border: none;
+  border-radius: var(--border-radius);
+  background-color: var(--color-primary);
+  color: var(--color-text-light);
+  cursor: pointer;
+  font-size: 1.2em;
+  line-height: 1;
+  font-weight: 600;
+}
+
+.button.rounded {
+  border-radius: 25px;
+}
+
+.button:disabled {
+  background-color: rgba(228,228,228,.7);
+  color: rgba(0,0,0,.5);
+  cursor: default;
+}

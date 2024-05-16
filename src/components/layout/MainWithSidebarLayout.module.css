@@ -1,0 +1,21 @@
+.layout {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-md);
+  padding: var(--gap-lg) var(--content-pad-lr);
+  margin: 0 auto;
+  max-width: var(--content-max-width);
+}
+
+.content {
+  display: flex;
+  gap: var(--gap-lg);
+  height: 100%;
+}
+
+.sidebar {
+  width: 260px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-s);
+}

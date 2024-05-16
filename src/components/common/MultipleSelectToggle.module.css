@@ -1,0 +1,7 @@
+.multipleSelectToggle {
+  display: flex;
+  gap: var(--gap-xs);
+  justify-content: start;
+  align-items: center;
+  flex-wrap: wrap;
+}

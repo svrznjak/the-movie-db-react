@@ -1,0 +1,15 @@
+.footer {
+  color: var(--color-text-light);
+  height: 60px;
+  background-color: var(--color-primary-dark);
+}
+
+.content {
+  display: flex;
+  height: 100%;
+  max-width: var(--content-max-width);
+  margin: 0 auto;
+  padding: 0 var(--content-pad-lr);
+  align-items: center;
+  justify-content: center;
+}
