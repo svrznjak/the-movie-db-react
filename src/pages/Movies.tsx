@@ -1,7 +1,7 @@
 import MultipleSelectToggle from "@/components/common/MultipleSelectToggle";
 import SearchSection from "@/components/SearchSection";
 import MainWithSidebarLayout from "@/components/layout/MainWithSidebarLayout";
-import { useState } from "react";
+import { useEffect,useState } from "react";
 import Button from "@/components/common/Button";
 import { Genre, useMovies, useGenres, useLanguages } from "@/api/thbd";
 import MovieList from "@/components/MovieList";
@@ -15,10 +15,25 @@ export default function Movies() {
   const {movies, isLoading, error} = useMovies({page: page, genreIds: selectedGenres, language: selectedLanguage});
 
   async function handleSearch(genreIds: number[], language: string) {
-    console.log(language)
     setSelectedGenres(genreIds); 
     setSelectedLanguage(language);
     setPage(1);
+
+    // write query params to URL
+    const searchParams = new URLSearchParams();
+    if (genreIds.length > 0) {
+      searchParams.set("genres", genreIds.join(","));
+    } else {
+      searchParams.delete("genres");
+    }
+    if (language) {
+      searchParams.set("language", language);
+    } else {
+      searchParams.delete("language");
+    }
+
+    const newUrl = `${window.location.pathname}?${searchParams.toString()}`;
+    window.history.pushState({}, "", newUrl);
   }
 
   function handleSetPage(newPage: number) {
@@ -48,11 +63,30 @@ export default function Movies() {
 
 function MovieFilter({onSearch}: {onSearch: (genreIds: number[], language: string) => void}) {
   const [genres, isLoadingGenres, genresError] = useGenres();  
+
   const [selectedGenres, setSelectedGenres] = useState<number[]>([]);
 
   const [languages, isLoadingLanguages, languagesError] = useLanguages();
   const [selectedLanguage, setSelectedLanguage] = useState<string>("");
 
+  // set genres and language when the url changes (e.g. back button)
+  function handleRouteChange() {
+    const urlSearchParams = new URLSearchParams(window.location.search);
+    const gIds = urlSearchParams.get("genres")?.split(",").map(Number) || [];
+    const language = urlSearchParams.get("language") || "";
+    console.log("setting genres and language", gIds, language);
+
+    setSelectedGenres(gIds);
+    setSelectedLanguage(language);
+  }
+
+  useEffect(() => {
+    handleRouteChange();
+    window.addEventListener('popstate', ()=>{handleRouteChange(); onSearch(selectedGenres, selectedLanguage)});
+    return () => {
+      window.removeEventListener('popstate', ()=>{handleRouteChange(); onSearch(selectedGenres, selectedLanguage)});
+    };
+  }, []);
 
   function handleToggleGenre(index: number) {
     if (!genres) return;
