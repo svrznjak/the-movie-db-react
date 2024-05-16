@@ -1,5 +1,5 @@
 import { Movie } from "@/api/thbd";
-import MovieCard from "@/components/MovieCard";
+import MovieCard, { MovieCardSkeleton } from "@/components/MovieCard";
 
 import styles from './MovieList.module.css';
 
@@ -10,5 +10,19 @@ export default function MovieList({movies}: {movies?: Movie[]}) {
         return <MovieCard key={movie.id} movie={movie} />
       }) : <p>No movies found</p>}
    </div> 
+  );
+}
+
+export function MovieListSkeleton({numberOfCards}: {numberOfCards: number}) {
+
+  const cards = [];
+  for (let i = 0; i < numberOfCards; i++) {
+    cards.push(<MovieCardSkeleton key={i} />);
+  }
+
+  return (
+    <div className={styles.movieList}>
+      {cards}
+    </div>
   );
 }

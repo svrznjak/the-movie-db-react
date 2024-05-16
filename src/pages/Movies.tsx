@@ -47,7 +47,7 @@ export default function Movies() {
   if(isLoading || !movies){
     return (
       <MainWithSidebarLayout title="Movies" sidebar={<MovieFilter onSearch={handleSearch} />} >
-        <MovieList />
+        <MovieListSkeleton numberOfCards={20} />
       </MainWithSidebarLayout>
     )
   }

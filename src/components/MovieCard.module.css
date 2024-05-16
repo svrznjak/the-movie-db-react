@@ -1,22 +1,18 @@
 .movieCard {
+  width: 100%;
   max-width: 350px; 
   border: 1px solid var(--color-border);
   border-radius: var(--border-radius);
   box-shadow: var(--card-shadow);
 }
 
-@media (max-width: 768px) {
-  .movieCard {
-    flex: 1 1 135px; 
-  }
-}
-
-.movieCard img {
+.movieCard img, .movieCard .skeletonImage{
   width: 100%;
   /* Maintain aspect ratio of 2:3 */
   aspect-ratio: 2/3;
   background-color: #f5f5f5;
   border-radius: var(--border-radius) var(--border-radius) 0 0;
+  border: none;
 }
 
 .movieCard .rating {
