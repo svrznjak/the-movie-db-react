@@ -1,0 +1,8 @@
+.dropdown {
+  width: 100%;
+  padding: var(--gap-s);
+  appearance: none;
+  border: none;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+}

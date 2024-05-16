@@ -1,0 +1,12 @@
+.pagination {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: var(--gap-s);
+  align-items: center;
+}
+
+.pagination span{
+  font-size: 1.2rem;
+  font-weight: 700;
+}

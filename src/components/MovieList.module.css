@@ -1,0 +1,26 @@
+.movieList {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  gap: var(--gap-lg);
+}
+
+@media (max-width: 1239px) {
+  .movieList {
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+  }
+}
+@media (max-width: 1040px) {
+  .movieList {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+}
+@media (max-width: 900px) {
+  .movieList {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+@media (max-width: 768px) {
+  .movieList {
+    gap: var(--gap-md);
+  }
+}
