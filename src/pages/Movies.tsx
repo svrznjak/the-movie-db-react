@@ -96,6 +96,14 @@ function MovieFilter({onSearch}: {onSearch: (genreIds: number[], language: strin
   const [languages, isLoadingLanguages, languagesError] = useLanguages();
   const [selectedLanguage, setSelectedLanguage] = useState<string>("");
 
+  // check if selected genres or language are any different from ones in the URL.
+  console.log(selectedLanguage !== new URLSearchParams(window.location.search).get("language"));
+
+  const urlGerneIds = new URLSearchParams(window.location.search).get("genres") || "";
+  const urlLanguage = new URLSearchParams(window.location.search).get("language") || "";
+
+  const isDifferentFromUrl = (selectedGenres.join(",") !== urlGerneIds || selectedLanguage !== urlLanguage);
+
   // set genres and language when the url changes (e.g. back button)
   function handleRouteChange() {
     const urlSearchParams = new URLSearchParams(window.location.search);
@@ -108,7 +116,6 @@ function MovieFilter({onSearch}: {onSearch: (genreIds: number[], language: strin
 
   useEffect(() => {
     handleRouteChange();
-    console.log("adding event listener")
     window.addEventListener('popstate', handleRouteChange);
     return () => {
       window.removeEventListener('popstate', handleRouteChange);
@@ -162,7 +169,7 @@ function MovieFilter({onSearch}: {onSearch: (genreIds: number[], language: strin
   return (
     <>
       <SearchSection sectionTitle="Filters" searchSectionParts={filters} startExpanded={true} />
-      <Button text="Search" onClick={() => {onSearch(selectedGenres, selectedLanguage)}} rounded  />
+      <Button text="Search" onClick={() => {onSearch(selectedGenres, selectedLanguage)}} rounded disabled={!isDifferentFromUrl}  />
     </>
   );
 }
