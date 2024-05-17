@@ -1,4 +1,4 @@
-import { Movie } from "@/api/thbd";
+import { Movie } from "@/api/tmdb";
 import MovieCard, { MovieCardSkeleton } from "@/components/MovieCard";
 
 import styles from './MovieList.module.css';

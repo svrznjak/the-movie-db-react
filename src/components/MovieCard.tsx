@@ -1,4 +1,4 @@
-import { Movie } from "@/api/thbd";
+import { Movie } from "@/types/tmdbTypes";
 
 import styles from './MovieCard.module.css';
 
