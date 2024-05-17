@@ -4,7 +4,7 @@ import path from "path";
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  base: "/",
+  base: "/agiledrop_tmdb/",
   plugins: [react()],
   resolve: {
     alias: {
