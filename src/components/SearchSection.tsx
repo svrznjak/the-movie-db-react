@@ -20,7 +20,6 @@ export default function SearchSection({sectionTitle, searchSectionParts, startEx
     );
   });
 
-
   return (
     <section className={`${styles.searchSection} ${isExpanded ? styles.expanded : ''}`}>
       <div className={styles.titleContainer} onClick={()=>setIsExpanded(!isExpanded)}>

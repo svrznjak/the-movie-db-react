@@ -19,6 +19,6 @@
   --border-radius: 8px;
   --card-shadow: 0 2px 8px rgba(0,0,0,.1);
 
-  /* icons */
+  /* css loaded icons */
   --arrow-right: url("data:image/svg+xml;base64,PHN2ZyBpZD0iZ2x5cGhpY29ucy1iYXNpYyIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB2aWV3Qm94PSIwIDAgMzIgMzIiPgogIDxwYXRoIGlkPSJjaGV2cm9uLXJpZ2h0IiBkPSJNMjMuMzI4NDksMTYuNzA3MDksMTMuMTIxMTUsMjYuOTE0MjVhLjUwMDA3LjUwMDA3LDAsMCwxLS43MDcxNSwwbC0yLjgyODA2LTIuODI4NWEuNS41LDAsMCwxLDAtLjcwNzA5TDE2Ljk2NDM2LDE2LDkuNTg1OTQsOC42MjEzNGEuNS41LDAsMCwxLDAtLjcwNzA5TDEyLjQxNCw1LjA4NTc1YS41MDAwNy41MDAwNywwLDAsMSwuNzA3MTUsMEwyMy4zMjg0OSwxNS4yOTI5MUEuOTk5ODguOTk5ODgsMCwwLDEsMjMuMzI4NDksMTYuNzA3MDlaIi8+Cjwvc3ZnPgo=");
 }

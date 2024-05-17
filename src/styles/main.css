@@ -1,3 +1,7 @@
+/*
+  In this file global styles for base html elements are defined.
+*/
+
 :root {
   font-family: system-ui;
   color: var(--color-text);

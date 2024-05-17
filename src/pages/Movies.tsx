@@ -70,10 +70,19 @@ export default function Movies() {
   }
 
   // Display placeholder while loading
-  if(isLoading || !movies){
+  if(isLoading || !movies) {
     return (
       <MainWithSidebarLayout title="Movies" sidebar={<MovieFilter onSearch={handleSearch} />} >
         <MovieListSkeleton numberOfCards={20} />
+      </MainWithSidebarLayout>
+    )
+  }
+
+  // Display placeholder when no movies are found
+  if(movies.length === 0) {
+    return (
+      <MainWithSidebarLayout title="Movies" sidebar={<MovieFilter onSearch={handleSearch} />} >
+        <p>No items were found that match your query.</p>
       </MainWithSidebarLayout>
     )
   }
