@@ -2,7 +2,11 @@ export function getUrlParam(name: string): string | null {
   return new URLSearchParams(window.location.search).get(name);
 }
 export function getUrlParamArray(name: string): string[] {
-  return getUrlParam(name)?.split(",") || [];
+  return (
+    getUrlParam(name)
+      ?.split(",")
+      .filter((param) => param.length !== 0) || []
+  );
 }
 
 export function setQueryParams(params: Record<string, string | number | boolean>) {
