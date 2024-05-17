@@ -1,6 +1,10 @@
+/**
+ * Hook wrappers for tmdb api calls
+ */
+
 import { GetMoviesParams, getGenres, getLanguages, getMovies } from "@/api/tmdb";
-import { Genre, Language, Movie } from "@/types/tmdbTypes";
-import { useEffect, useMemo, useState } from "react";
+import { Genre, Language, Movie } from "@/types/tmdb";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 export function useGenres() {
   const [genres, setGenres] = useState<Genre[] | null>(null);
@@ -11,6 +15,8 @@ export function useGenres() {
     const fetchGenres = async () => {
       try {
         setIsLoading(true);
+        setError(null);
+
         const genres = await getGenres();
 
         setGenres(genres);
@@ -40,6 +46,8 @@ export function useLanguages() {
     const fetchLanguages = async () => {
       try {
         setIsLoading(true);
+        setError(null);
+
         const languages = await getLanguages();
         setLanguages(languages);
       } catch (err: unknown) {
@@ -81,29 +89,30 @@ export function useMovies({
     return params;
   }, [page, genreIds, language]);
 
-  useEffect(() => {
-    const fetchMovies = async () => {
-      try {
-        setIsLoading(true);
+  const fetchMovies = useCallback(async () => {
+    try {
+      setIsLoading(true);
+      setError(null);
 
-        const { movies, totalResults } = await getMovies(params);
+      const { movies, totalResults } = await getMovies(params);
 
-        setTotalResults(totalResults);
-        setMovies(movies);
-      } catch (err: unknown) {
-        console.error(err);
-        if (err instanceof Error) {
-          setError(err);
-        } else {
-          setError(new Error("An error occurred: " + JSON.stringify(err)));
-        }
-      } finally {
-        setIsLoading(false);
+      setTotalResults(totalResults);
+      setMovies(movies);
+    } catch (err: unknown) {
+      console.error(err);
+      if (err instanceof Error) {
+        setError(err);
+      } else {
+        setError(new Error("An error occurred: " + JSON.stringify(err)));
       }
-    };
-
-    fetchMovies();
+    } finally {
+      setIsLoading(false);
+    }
   }, [params]);
 
-  return { movies, totalResults, isLoading, error };
+  useEffect(() => {
+    fetchMovies();
+  }, [fetchMovies]);
+
+  return [movies, totalResults, isLoading, error, fetchMovies] as const;
 }

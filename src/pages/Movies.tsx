@@ -8,15 +8,17 @@ import MovieList, { MovieListSkeleton } from "@/components/MovieList";
 import Pagination from "@/components/common/Pagination";
 import Dropdown from "@/components/common/Dropdown";
 import { getUrlParam, getUrlParamArray, setQueryParams } from "@/utils/urlHelper";
-import { Genre } from "@/types/tmdbTypes";
+import { Genre } from "@/types/tmdb";
 
 export default function Movies() {
+  // State
   const [selectedGenres, setSelectedGenres] = useState<number[]>(getUrlParamArray("genres").map(Number)); // initial genres from URL
   const [selectedLanguage, setSelectedLanguage] = useState<string>(getUrlParam("language") || ""); // initial language from URL
   const [page, setPage] = useState(Number(getUrlParam("page") || "1"));
-  const {movies, totalResults, isLoading, error} = useMovies({page: page, genreIds: selectedGenres, language: selectedLanguage});
+  const [movies, totalResults, isLoading, error, refetch] = useMovies({page: page, genreIds: selectedGenres, language: selectedLanguage});
   const totalPages = useMemo(()=>Math.ceil(totalResults / 20), [totalResults]);
 
+  // State handlers
   function handleSearch(genreIds: number[], language: string) {
     setSelectedGenres(genreIds); 
     setSelectedLanguage(language);
@@ -28,6 +30,10 @@ export default function Movies() {
       language: language,
       page: 1,
     });
+  }
+
+  function handleTryAgain() {
+    refetch();
   }
 
   function handleSetPage(newPage: number) {
@@ -53,7 +59,15 @@ export default function Movies() {
 
 
 
-  if(error) return <p>Error loading movies</p>; // This is not ideal, but it's fine for now
+  // Simple error handling. TODO: Network error notification / auto retry
+  if(error){
+    return (
+      <MainWithSidebarLayout title="Movies" sidebar={<MovieFilter onSearch={handleSearch} />} >
+        <p>Error loading movies. Check your internet connection.</p>
+        <Button text="Retry" onClick={handleTryAgain} />
+      </MainWithSidebarLayout>
+    )
+  }
 
   // Display placeholder while loading
   if(isLoading || !movies){
@@ -64,6 +78,7 @@ export default function Movies() {
     )
   }
 
+  // Render
   return (
     <MainWithSidebarLayout title="Movies" sidebar={<MovieFilter onSearch={handleSearch} />} >
       <MovieList movies={movies} />
@@ -128,6 +143,7 @@ function MovieFilter({onSearch}: {onSearch: (genreIds: number[], language: strin
     )
   }
 
+  // Prepare data for rendering
   const genreItems = genres.map((genre: Genre) => {
     return {text: genre.name, isToggled: selectedGenres.includes(genre.id)};
   });
@@ -137,13 +153,12 @@ function MovieFilter({onSearch}: {onSearch: (genreIds: number[], language: strin
     languageOptions[language.iso_639_1] = language.english_name;
   });
 
-
-
   const filters = [
     {title: "Genres", content: <MultipleSelectToggle items={genreItems} onToggle={handleToggleGenre}  />}, 
     {title: "Language", content: <Dropdown options={languageOptions} selectedOption={selectedLanguage} onOptionChange={handleLanguageChange} />}
   ];
 
+  // Render
   return (
     <>
       <SearchSection sectionTitle="Filters" searchSectionParts={filters} startExpanded={true} />

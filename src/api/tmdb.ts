@@ -2,8 +2,7 @@
  * This is the API for the THBD API. It makes requests to the THBD API. Returns the response from the THBD API.
  */
 import Axios from "axios";
-import { z } from "zod";
-import { Genre, Language, Movie } from "@/types/tmdbTypes";
+import { Genre, Language, Movie, genresSchema, languagesSchema, moviesSchema } from "@/types/tmdb";
 
 const accessToken = import.meta.env.VITE_TMDB_ACCESS_TOKEN;
 
@@ -27,7 +26,7 @@ export async function getGenres(): Promise<Genre[]> {
     headers,
   });
 
-  return z.array(z.object({ id: z.number(), name: z.string() })).parse(response.data.genres);
+  return genresSchema.parse(response.data.genres);
 }
 
 export async function getLanguages(): Promise<Language[]> {
@@ -35,7 +34,7 @@ export async function getLanguages(): Promise<Language[]> {
     headers,
   });
 
-  return z.array(z.object({ iso_639_1: z.string(), english_name: z.string(), name: z.string() })).parse(response.data);
+  return languagesSchema.parse(response.data);
 }
 
 export type GetMoviesParams = {
@@ -52,26 +51,7 @@ type getMoviesResponse = {
 export async function getMovies(params: GetMoviesParams): Promise<getMoviesResponse> {
   const response = await axios.get(`/discover/movie`, { headers, params });
 
-  const movies: Movie[] = z
-    .array(
-      z.object({
-        adult: z.boolean(),
-        backdrop_path: z.string().nullable(),
-        genre_ids: z.array(z.number()),
-        id: z.number(),
-        original_language: z.string(),
-        original_title: z.string(),
-        overview: z.string(),
-        popularity: z.number(),
-        poster_path: z.string().nullable(),
-        release_date: z.string(),
-        title: z.string(),
-        video: z.boolean(),
-        vote_average: z.number(),
-        vote_count: z.number(),
-      })
-    )
-    .parse(response.data.results);
+  const movies: Movie[] = moviesSchema.parse(response.data.results);
 
   const totalResults = typeof response.data.total_results === "number" ? response.data.total_results : 0;
 
